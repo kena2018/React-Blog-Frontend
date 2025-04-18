@@ -60,14 +60,14 @@ metadata:
     alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
     alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '5'
     alb.ingress.kubernetes.io/healthy-threshold-count: '2'
-    alb.ingress.kubernetes.io/load-balancer-name: ReactBlogFrontend-alb
+    alb.ingress.kubernetes.io/load-balancer-name: reactblogfrontend-alb
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/subnets: subnet-08131ef429263e0da, subnet-088aa1251b654faa1
+    alb.ingress.kubernetes.io/subnets: subnet-02fc744618c284bfe, subnet-09b0b706ff14f7086
     alb.ingress.kubernetes.io/success-codes: 200-404
     alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
   labels:
-    app: app-ReactBlogFrontend
-  name: ingress-ReactBlogFrontend
+    app: app-reactblogfrontend
+  name: ingress-reactblogfrontend
 spec:
   defaultBackend:
     service:
