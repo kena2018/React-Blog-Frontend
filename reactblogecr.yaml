@@ -62,7 +62,7 @@ metadata:
     alb.ingress.kubernetes.io/healthy-threshold-count: '2'
     alb.ingress.kubernetes.io/load-balancer-name: ReactBlogFrontend-alb
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/subnets: subnet-0a1fb78867e6c978d, subnet-0cd6948d749664d8d
+    alb.ingress.kubernetes.io/subnets: subnet-08131ef429263e0da, subnet-088aa1251b654faa1
     alb.ingress.kubernetes.io/success-codes: 200-404
     alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
   labels:
