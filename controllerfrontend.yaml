@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reactfrontend-react-blog-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: reactfrontend-react-blog-frontend
+  template:
+    metadata:
+      annotations:
+        redeploy: 'true'
+      labels:
+        app: reactfrontend-react-blog-frontend
+    spec:
+      containers:
+      - image: 672072155362.dkr.ecr.us-east-1.amazonaws.com/controllerfrontend:latest
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 180
+          periodSeconds: 5
+        name: controllerfrontend
+        ports:
+        - containerPort: 80
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: react-blog-frontend-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: reactfrontend-react-blog-frontend
+  type: NodePort
+---
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  annotations:
+    ingressclass.kubernetes.io/is-default-class: 'true'
+  name: my-aws-ingress-class
+spec:
+  controller: ingress.k8s.aws/alb
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: '15'
+    alb.ingress.kubernetes.io/healthcheck-path: /
+    alb.ingress.kubernetes.io/healthcheck-port: traffic-port
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '5'
+    alb.ingress.kubernetes.io/healthy-threshold-count: '2'
+    alb.ingress.kubernetes.io/load-balancer-name: reactfrontend-alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/subnets: subnet-0048e7a9afb4452ea, subnet-09714aa36aeeef7bf
+    alb.ingress.kubernetes.io/success-codes: 200-404
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
+  labels:
+    app: app-reactfrontend
+  name: ingress-reactfrontend
+spec:
+  defaultBackend:
+    service:
+      name: react-blog-frontend-service
+      port:
+        number: 80
+  ingressClassName: my-aws-ingress-class
